@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+	<title>Bubble Visualisation</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Bubbles Visualisation CSS Code -->
+	<style>
+
+body {
+ cursor: url('http://www.rw-designer.com/cursor-extern.php?id=33326'), pointer;
+
+}
+
+#bubbles-container {
+	position: relative;
+	width: 1000px;
+	height: 1000px;
+	cursor: url(http://www.rw-designer.com/cursor-extern.php?id=33326);
+}
+
+.bubble {
+	width: 50px;
+	border-radius: 50%;
+	line-height: 0;
+	background: #bbb;
+	position: absolute;
+transition: background .25s ease-in-out;
+}
+
+.bubble:after {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+}
+
+
+.bubble-text {
+	position: absolute;
+	bottom: 50%;
+	width: 100%;
+	text-align: center;
+}
+
+#bubble_1 {
+	top: 100px;
+	right: 200px;
+	background: #ff2052;
+}
+
+#bubble_1:hover {
+	background: #ff6d8d;
+}
+
+#bubble_2 {
+	top: 50px;
+	right: 50px;
+	background: #800080;
+}
+
+#bubble_2:hover {
+	background: #cd00cd;
+}
+
+#bubble_3 {
+	top: 500px;
+	right: 500px;
+	background: #90ee90;
+}
+
+#bubble_3:hover {
+	background: #d2f8d2;
+}
+	</style>
+
+
+
+</head>
+<body>
+
+<div id="bubbles-container">
+<div class="bubble" id="bubble_1">
+	<span class="bubble-text">YES</span>
+</div>
+<div class="bubble" id="bubble_2"></div>
+<div class="bubble" id="bubble_3"></div>
+<div class="bubble" id="bubble_4"></div>
+
+</div>
+
+</body>
+
+        <script>
+$(document).ready(function() {
+        console.log("Hello");
+        alert("Hello world!");
+
+	$("#bubble_1").css({"height":"100px", "width":"100px"});
+});
+
+        </script>
+
+
+</html>
