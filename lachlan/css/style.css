@@ -1,0 +1,33 @@
+/*Loading Spinner*/
+#loading {
+	background-image: url('../images/infinityspinner.gif');
+	background-color: white;
+	border-radius: 15px;
+	left: 50%;
+	margin-left: -100px;
+	top: 50%;
+	margin-top: -100px;
+	width: 200px;
+	height: 200px;
+	position: fixed;
+	border: 2px solid black;
+	box-shadow: 5px 10px;
+	z-index: 22;
+	transition: all 0.5s ease; /* Transition anything that's changed */
+}
+
+body.loaded #loading {
+	visibility: hidden;
+	opacity: 0;
+}
+
+body.loaded .content{
+	filter: none;
+	visibility: visible;
+}
+
+.content {
+	visibility: hidden;
+	filter: blur(5px);
+	transition: all 0.5s ease; /* Transition anything that's changed */
+}
