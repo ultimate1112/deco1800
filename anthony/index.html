@@ -1,104 +1,362 @@
 <!doctype html>
 <html>
 <head>
-	<title>Bubble Visualisation</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<title>AJAX Simulation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
-
-	<!-- Bubbles Visualisation CSS Code -->
-	<style>
-
-body {
-	cursor: url('http://www.rw-designer.com/cursor-extern.php?id=33326'), pointer;
+<style>
+/*Loading Spinner*/
+#loading {
+	background-image: url('images/infinityspinner.gif');
+	background-color: white;
+	border-radius: 15px;
+	left: 50%;
+	margin-left: -100px;
+	top: 50%;
+	margin-top: -100px;
+	width: 200px;
+	height: 200px;
+	position: fixed;
+	border: 2px solid black;
+	box-shadow: 5px 10px;
+	z-index: 22;
+	transition: all 0.5s ease; /* Transition anything that's changed */
 }
 
-#bubbles-container {
-	position: relative;
-	width: 1000px;
-	height: 1000px;
-	cursor: url(http://www.rw-designer.com/cursor-extern.php?id=33326);
+body.loaded #loading {
+	visibility: hidden;
+	opacity: 0;
 }
 
-.bubble {
-	width: 50px;
-	border-radius: 50%;
-	line-height: 0;
-	background: #bbb;
-	position: absolute;
-transition: background .25s ease-in-out;
+body.unloaded #loading {
+    visibility: visible;
+    opacity: 1;
 }
 
-.bubble:after {
-	content: "";
-	display: block;
-	padding-bottom: 100%;
+body.loaded .content{
+	filter: none;
+	visibility: visible;
 }
 
-
-.bubble-text {
-	position: absolute;
-	bottom: 50%;
-	width: 100%;
-	text-align: center;
+body.unloaded .content {
+	visibility: hidden;
+	filter: blur(5px);
+	transition: all 0.5s ease; /* Transition anything that's changed */
 }
-
-#bubble_1 {
-	top: 100px;
-	right: 200px;
-	background: #ff2052;
-}
-
-#bubble_1:hover {
-	background: #ff6d8d;
-}
-
-#bubble_2 {
-	top: 50px;
-	right: 50px;
-	background: #800080;
-}
-
-#bubble_2:hover {
-	background: #cd00cd;
-}
-
-#bubble_3 {
-	top: 500px;
-	right: 500px;
-	background: #90ee90;
-}
-
-#bubble_3:hover {
-	background: #d2f8d2;
-}
-	</style>
-
-
+</style>
 
 </head>
-<body>
+<body class="unloaded">
+    <!-- Loading Spinner -->
+    <div id="loading"></div>
 
-<div id="bubbles-container">
-<div class="bubble" id="bubble_1">
-	<span class="bubble-text">YES</span>
-</div>
-<div class="bubble" id="bubble_2"></div>
-<div class="bubble" id="bubble_3"></div>
-<div class="bubble" id="bubble_4"></div>
+    <main class="content">
 
-</div>
+        <!-- Refresh Button -->
+        <div>
+            <p>
+                Show Me The Crime!&nbsp
+                <button id="refresh">Refresh!</button>
+                <input type="range" id="date" min="1" max="12">
+                <span id="dte"></span>
+            </p>
+        </div>
+    
+        <!-- LGA Selection -->
+        <select id="lga" class="js-example-basic-single" style="width: 100%;">
+            <option selected value="...">...</option>
+        </select>
+    
+        <!-- Results -->
+        <div id="result">
+        </div>
+
+    </main>
+
+
+
+    <!-- Variables for the site. MODEL -->
+    <script>
+        var isLoading = true;
+        var dataset = [];
+        var lga = [];
+        var timeframe = [];
+
+        // Ajax query options.
+        // Date will revert to latest datapoint when retrieveTimeframe() is called.
+        var options = {
+            date: "NOV19",
+            lga: "Brisbane City Council",
+        };
+
+    </script>
+
+
+    <!--Processing code. CONTROLLER -->
+    <script>
+        $(document).ready(function() {
+            console.log("Starting script.");
+
+            $('.js-example-basic-single').select2();
+
+            // Configure Dropdown Boxes.
+            retrieveLGA();
+            retrieveTimeframe();
+            
+            // Request the data for default values.
+            retrieveDataset();
+
+            // Handle Input elements. --------------------------------------------
+            $("#refresh").on("click", function() {
+                showLoader();
+
+                $('#lga').val(options['lga']);
+                $('.js-example-basic-single').select2();
+
+
+                $("#date").val(timeframe.length - timeframe.indexOf(options['date']));
+                $("#dte").text(options['date']);
+
+                // Pull data again.
+                retrieveDataset();
+            });
+
+            $("#lga").change(function() {
+                showLoader();
+
+                // Skip if default.
+                if($('#lga').val() == "...") {
+                    return;
+                }
+
+                // Pull data for specified LGA.
+                options['lga'] = $('#lga').val();
+                retrieveDataset();
+            });
+
+            $("#date").change(function() {
+                showLoader();
+
+                // Pull data for specified LGA.  
+                var key = timeframe.length - $('#date').val();
+                options['date'] = timeframe[key];
+
+                $("#dte").text(options['date']);
+
+                retrieveDataset();
+            });
+
+
+            // Finished initialization. Hide the loader.
+            hideLoader();
+        });
+
+
+        // Show the loading spinner.
+        function showLoader() {
+            isLoading = true;
+
+            $("body").removeClass("loaded");
+            $("body").addClass("unloaded");
+
+            setTimeout(function() {
+                // Check if page / dataset has been loaded.
+                if(isLoading == true 
+                    && ((!dataset || dataset.length <= 0)
+                )) {
+                    console.log("Webpage loading timeout. Please refresh the page and try again.");
+                    alert("Something bad has happened. Please refresh the page and try again.");
+                }
+            }, 10000);
+        }
+
+        // Hide the loading spinner.
+        function hideLoader() {
+            isLoading = false;
+
+            $("body").removeClass("unloaded");
+            $("body").addClass("loaded");
+        }
+
+        // Update the view.
+        function updateView() {
+            var counter = 0;
+            var firstKey = Object.keys(dataset)[0];
+
+            // clear element.
+            $("#result").empty();
+
+            $.each(dataset[firstKey], function(offence, value) {
+                if(counter >= 12) {
+                    return;
+                }
+
+                $("#result").append("<p>" + "Offence [" + offence + "]: " + value + "</p>");
+                counter = counter + 1;
+            });
+
+            hideLoader();   // View is finished updating.
+        }
+
+        // Update the LGA Dropdown box.
+        function updateLGA() {
+
+            $('#lga').empty();
+
+            $.each(lga, function(index, value) {
+
+                $('#lga').append($('<option>', {
+                    value: value,
+                    text: value,
+                }));
+            });
+
+            $('#lga').val(options['lga']);
+            $('.js-example-basic-single').select2();
+        }
+
+
+        function updateTimeframe() {
+
+            // Set to latest datapoint
+            $("#date").attr('max', timeframe.length);
+
+            options['date'] = timeframe[0];
+            $("#date").val(timeframe.length - 0);
+
+            $("#dte").text(options['date']);
+        }
+
+
+        /**
+         * Retrieve Dataset.
+         * @param: var options - AJAX Options.
+         * @return var dataset - Data.
+         */
+        function retrieveDataset() {
+
+            PrettyPrintJsonConsole(JSON.stringify(options,null,4));
+
+            // AJAX Call.
+            $.ajax({
+                url: 'https://ufc02t01.uqcloud.net/anthony/search.php',
+                data: options,
+                dataType: 'json',
+                cache: false,
+                timeout: 10000,
+                success: function(data) {
+                    if(data != null) {
+                        console.log("AJAX: Successfully retrieved results");
+
+                        // Save to global variable.
+                        dataset = data;
+                        PrettyPrintJsonConsole(JSON.stringify(dataset,null,4));
+
+                        updateView();
+                    }
+                },
+                error: function() {
+                    console.log("AJAX: Failed to retrieve results.");
+                }
+            });
+        }
+
+
+        function retrieveLGA() {
+            // AJAX Call.
+            $.ajax({
+                url: 'https://ufc02t01.uqcloud.net/anthony/get_lga.php',
+                dataType: 'json',
+                cache: false,
+                timeout: 10000,
+                success: function(data) {
+                    if(data != null) {
+                        console.log("AJAX: Successfully retrieved results");
+
+                        // Save to global variable.
+                        lga = data;
+                        PrettyPrintJsonConsole(JSON.stringify(lga,null,4));
+
+                        updateLGA();
+                    }
+                },
+                error: function() {
+                    console.log("AJAX: Failed to retrieve results.");
+                }
+            });            
+        }
+
+        function retrieveTimeframe() {
+            // AJAX Call.
+            $.ajax({
+                url: 'https://ufc02t01.uqcloud.net/anthony/get_timeframe.php',
+                dataType: 'json',
+                cache: false,
+                timeout: 10000,
+                success: function(data) {
+                    if(data != null) {
+                        console.log("AJAX: Successfully retrieved results");
+
+                        // Save to global variable.
+                        timeframe = data;
+
+                        updateTimeframe();
+                    }
+                },
+                error: function() {
+                    console.log("AJAX: Failed to retrieve results.");
+                }
+            });            
+        }
+
+
+    </script>
+
+
+
+
+    <!-- Visualisation of JSON in Console -->
+    <script>
+        /* Pulled from https://ourcodeworld.com/articles/read/112/how-to-pretty-print-beautify-a-json-string */
+        function PrettyPrintJsonConsole(json) {
+        if (typeof json != 'string') {
+            json = JSON.stringify(json, undefined, '\t');
+        }
+
+        var 
+            arr = [],
+            _string = 'color:green',
+            _number = 'color:darkorange',
+            _boolean = 'color:blue',
+            _null = 'color:magenta',
+            _key = 'color:red';
+
+        json = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var style = _number;
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    style = _key;
+                } else {
+                    style = _string;
+                }
+            } else if (/true|false/.test(match)) {
+                style = _boolean;
+            } else if (/null/.test(match)) {
+                style = _null;
+            }
+            arr.push(style);
+            arr.push('');
+            return '%c' + match + '%c';
+        });
+
+        arr.unshift(json);
+
+        console.log.apply(console, arr);
+    }
+    </script>
 
 </body>
-
-        <script>
-$(document).ready(function() {
-        console.log("Hello");
-        alert("Hello world!");
-
-	$("#bubble_1").css({"height":"100px", "width":"100px"});
-});
-
-        </script>
-	<script src="ajax.js"></script>
-
 </html>

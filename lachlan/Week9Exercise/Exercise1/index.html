@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Week 7 Workshop: Exercise 1</title>
+		<link rel="stylesheet" href="css/strip.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+
+		<div id="loading"></div>
+
+		<h1>Caching with LocalStorage Example</h1>
+		
+		<form id="filter">
+			<input id="filter-text" type="text" placeholder="Filter by Record Text" value="">
+		</form>
+
+		<p id="record-count"><strong>0</strong> Records Displayed</p>
+
+		<section id="records"></section>
+
+		<article class="record record-template">
+			<h2>Record Title</h2>
+			<section class="record-content">
+				<a href="#">
+					<img src="images/placeholder.png" alt="Record Image" class="record-image strip">
+				</a>
+				<p class="description">Record Description</p>
+			</section>
+			<a href="#" class="year">More Images From <span>Record Year</span><i class="loading-small"></i></a>
+			<section class="more-images">Images from MediaWiki</section>
+		</article>
+
+		<script src="js/jquery-3.4.1.min.js"></script>
+		<script src="js/strip.pkgd.min.js"></script>
+		<script src="js/script.js"></script>
+
+	</body>
+</html>

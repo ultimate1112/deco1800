@@ -1,0 +1,222 @@
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+/* GLOBAL STYLES */
+body {
+    font-family: 'Roboto',Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 { 
+    color: black;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+.container {
+    width: 85%;
+    margin: 0 auto;
+
+}
+
+p {
+    line-height: 28px;
+}
+
+.btn {
+    background: black;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    background: rgb(20, 20, 20);
+}
+
+/* Box Model */
+
+.pad-x{
+    padding: 0 50px;
+}
+
+.pad-y{
+    padding: 50px 0;
+}
+
+.small-pad-top {
+    padding-top: 20px;
+}
+
+.pad-top {
+    padding-top: 50px;
+}
+
+.big-pad-top {
+    padding-top: 80px;
+}
+
+.small-pad-bottom {
+    padding-bottom: 20px;
+}
+
+.pad-bottom {
+    padding-bottom: 50px;
+}
+
+.big-pad-bottom {
+    padding-bottom: 80px;
+}
+
+.margin {
+    margin: 50px;
+}
+
+.small-margin-top {
+    margin-top: 20px;
+}
+
+.margin-top {
+    margin-top: 50px;
+}
+
+.big-margin-top {
+    margin-top: 80px;
+}
+
+.small-margin-bottom {
+    margin-bottom: 20px;
+}
+
+.margin-bottom {
+    margin-bottom: 50px;
+}
+
+.big-margin-bottom {
+    margin-bottom: 80px;
+}
+
+
+/* Flex box */
+.flex {
+    display: flex;
+}
+
+.center-y {
+    align-items: center;
+}
+
+.center-x {
+    justify-content: center;
+}
+
+.bottom-y {
+    align-items: flex-end;
+}
+
+
+/* MAIN MENU */
+#main-menu {
+    background-color: white;
+    height: 80px;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.5px solid rgb(209, 204, 204);
+}
+
+#main-menu a {
+    color: black;
+}
+
+#main-menu a:hover {
+    color: grey;
+}
+
+#main-menu .current a {
+    color: grey;
+}
+
+#main-menu li {
+    padding: 0 20px;
+    list-style: none;
+}
+
+#main-menu ul {
+    padding-right: 8%;
+}
+
+#main-menu h1 { 
+    margin-left: 80px;
+}
+
+/* BUBBLE SECTION */
+#bubble-section {
+    background: white;
+    min-height:100vh;
+}
+
+/* Banner */
+.banner {
+    height: 45vh;
+    background: #D9D9D9;
+}
+
+.banner h1 {
+    font-size: 48px;
+    color: white;
+    padding-bottom: 20px;
+}
+
+/* FOOTER */
+
+footer {
+    color:#fff;
+    background-color:black;
+}
+
+footer h3{
+    text-transform: uppercase;
+}
+
+footer ul {
+    list-style: none;
+    color: white;
+}
+
+footer li {
+    margin-bottom: 20px;
+}
+
+footer a {
+    color: white;
+}
+
+footer a:hover {
+    color: grey;
+}
+
+hr {
+    border: 1px solid rgb(192, 187, 187);
+}
+
+/* Social Media Links */
+.icon {
+    height: 40px;
+    width: 40px;
+    border-radius: 25px;
+    margin-right: 20px;
+    cursor: pointer;
+    background-size: cover;
+}
+
