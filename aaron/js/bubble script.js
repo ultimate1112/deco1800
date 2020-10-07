@@ -1,39 +1,60 @@
 $(document).ready(function() {
-    console.log("Hello");
-    // alert("Hello world!");
 
-    $("#bubble_1").css({"height":"200px", "width":"200px"});
 
-    // setInterval(function() {bubbleMovement(center);}, 100);
+});
+
+function beginBubbles(values) {
     var center = [[]];
     var bubble = ".bubble";
     var bubbleText = "#bubble-text_";
-    var testValues = [{crime: "Some crime", crimeValue: 100 },
-        {crime: "Arson", crimeValue: 200 },
-        {crime: "Rape", crimeValue: 300 },
-        {crime: "Murder", crimeValue: 500 },
-        {crime: "Assault", crimeValue: 400 },
-        {crime: "Some crime", crimeValue: 50 },
-        {crime: "Some crime", crimeValue: 100 },
-        {crime: "Some crime", crimeValue: 200 },
-        {crime: "Some crime", crimeValue: 300 },
-        {crime: "Some crime", crimeValue: 250 },
-        {crime: "Some crime", crimeValue: 300 },
-        {crime: "Some crime", crimeValue: 50 }];
-    testValues.sort(function (a, b) {
+    var bubbleValues = [];
+    var counter = 0;
+    $.each(dataset, function(offence, value) {
+        if(counter >= 12) {
+            return;
+        }
+        var object = {};
+        object.crime = offence;
+        object.crimeValue = value;
+        bubbleValues.push(object);
+        counter++;
+    });
+    // var testValues = [{crime: "Some crime", crimeValue: 100 },
+    //     {crime: "Arson", crimeValue: 200 },
+    //     {crime: "Rape", crimeValue: 300 },
+    //     {crime: "Murder", crimeValue: 500 },
+    //     {crime: "Assault", crimeValue: 400 },
+    //     {crime: "Some crime", crimeValue: 50 },
+    //     {crime: "Some crime", crimeValue: 100 },
+    //     {crime: "Some crime", crimeValue: 200 },
+    //     {crime: "Some crime", crimeValue: 300 },
+    //     {crime: "Some crime", crimeValue: 250 },
+    //     {crime: "Some crime", crimeValue: 300 },
+    //     {crime: "Some crime", crimeValue: 50 }];
+    bubbleValues.sort(function (a, b) {
         return a.crimeValue - b.crimeValue;
     });
-    hoverBubble(testValues, bubbleText);
+    console.log(bubbleValues);
+    hoverBubble(bubbleValues, bubbleText);
     for (var i = 0; i < $('.bubble').length; i++) {
         center[i] = getMiddleCoor(bubble + i);
-        getBubbleSize(testValues[i].crimeValue, bubble + i);
-        setText(testValues[i].crime, testValues[i].crimeValue, bubbleText + i);
+        getBubbleSize(bubbleValues[i].crimeValue, bubble + i);
+        setText(bubbleValues[i].crime, bubbleValues[i].crimeValue, bubbleText + i);
     }
     setInterval(function() {bubbleMovement(center);}, 1400);
     // create a interval that moves each bubble
     // updateContainer();
 
-});
+
+
+
+    setTimeout(function() {
+        alert('hello world!');
+
+        alert('Rendering from bubble%20script.js: ' + options['date'] + ' & ' + options['lga']);
+    }, 10000);  // 10 seconds to timeout.
+
+}
 
 function getBubbleSize(crimeValue, element) {
     // Area of circle is pi * r^2
