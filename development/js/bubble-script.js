@@ -34,32 +34,50 @@ function beginBubbles(values) {
     bubbleValues.sort(function (a, b) {
         return a.crimeValue - b.crimeValue;
     });
+    var round = 0;
+    var len = bubbleValues.length;
+    while(round < len){
+        bubbleValues[round].crimeValue = Math.round(bubbleValues[round].crimeValue);
+        round++
+    }
     console.log(bubbleValues);
     hoverBubble(bubbleValues, bubbleText);
     for (var i = 0; i < $('.bubble').length; i++) {
         center[i] = getMiddleCoor(bubble + i);
-        getBubbleSize(bubbleValues[i].crimeValue, bubble + i);
-        setText(bubbleValues[i].crime, bubbleValues[i].crimeValue, bubbleText + i);
+        getBubbleSize(bubbleValues[i].crimeValue, bubble + i, bubbleValues[0].crimeValue);
+        setText(bubbleValues[i].crime, bubbleValues[i].crimeValue, bubbleText + i, bubbleValues[0].crimeValue);
     }
     setInterval(function() {bubbleMovement(center);}, 1400);
     // create a interval that moves each bubble
     // updateContainer();
 
+
+
+
+    setTimeout(function() {
+        alert('hello world!');
+
+        alert('Rendering from bubble%20script.js: ' + options['date'] + ' & ' + options['lga']);
+    }, 10000);  // 10 seconds to timeout.
+
 }
 
-function getBubbleSize(crimeValue, element) {
+function getBubbleSize(crimeValue, element, smallestValue) {
+    var minHeight = 40;
+    var standardArea = Math.PI * Math.pow(minHeight, 2);
+    var modifiedarea = crimeValue/smallestValue * standardArea;
     // Area of circle is pi * r^2
-    var standardArea = Math.PI * Math.pow(6, 2);
-    var areaOfCircleRequired = standardArea * crimeValue;
-    // Reverse the formula to get the radius of the circle and multiply by 2 to get the height
-    // This is done because a value that is twice as large doesn't mean the radius is double but rather the area
-    var height = Math.sqrt(areaOfCircleRequired / Math.PI) * 2;
+    var height = Math.sqrt(modifiedarea / Math.PI) * 2;
     $(element).css({"height":height + "px", "width":height + "px"});
 }
 
-function setText(text, crimeValue, element) {
-    var fontSize = 15 + crimeValue * 0.03;
-    $(element).text(text);
+function setText(text, crimeValue, element, smallestValue) {
+    var fontSize = 15 + crimeValue/smallestValue;
+    if (crimeValue == 0) {
+        $(element).text("");
+    } else {
+        $(element).text(text);
+    }
     $(element).css({"font-size":fontSize + "px"});
 
 }

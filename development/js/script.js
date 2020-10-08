@@ -31,6 +31,9 @@ function startBessie() {
     // Request the data for default values.
     retrieveDataset();
 
+options['lga'] = "testing transmission from script.js!";
+
+
     $("#refresh").on("click", function() {
         showLoader();
 
