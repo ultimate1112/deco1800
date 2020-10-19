@@ -8,22 +8,37 @@ body {
     position: relative;
     display: grid;
     height: 100vh;
-    width: 50vw;
+    width: min-content;
     justify-items: center;
+    justify-self: center;
     font-family: 'Open Sans', sans-serif;
     grid-area: 1 / 2 / 2 / 3;
     padding-left: 1.5vw;
+    grid-template-rows: min-content min-content min-content;
 }
-
 
 .bubble-row {
     display: grid;
     grid-template-columns: min-content min-content min-content min-content;
     /*font-weight: normal;*/
+    height: min-content;
+    padding-top: 2vh;
 }
 
 .bubble-row :hover {
     font-weight: bold;
+}
+
+#front-row {
+    /*grid-area: 1 / 1 / 2 / 2;*/
+}
+
+#middle-row {
+    /*grid-area: 2 / 1 / 3 / 2;*/
+}
+
+#bottom-row {
+    /*grid-area: ;*/
 }
 
 .bubble {
@@ -32,11 +47,13 @@ body {
     width: 100px;
     border-radius: 50%;
     /*line-height: 0;*/
-    background: #bbb;
+    /*background: #bbb;*/
     position: relative;
     transition: background .25s ease-in-out, top 1.5s ease-in-out, left 1.5s ease-in-out, font-weight 0.2s
     ease-in-out;
     transition-timing-function: linear;
+    background-size: cover;
+    margin-left: 1vw;
 }
 
 /*.bubble :hover {*/
@@ -105,85 +122,85 @@ body {
 }
 
 #bubble_0 {
-    background: grey;
     grid-area: 1 / 1 / 2 / 2;
+    /*background-image: url("../images/gradients/deep-orange.png");*/
 
 }
 
 #bubble_1 {
-    background: #ff2052;
+    /*background: #ff2052;*/
     grid-area: 1 / 2 / 2 / 3;
 
 }
 
 #bubble_1:hover {
-    background: #ff6d8d;
+    /*background: #ff6d8d;*/
 
 }
 
 #bubble_2 {
-    background: #800080;
+    /*background: #800080;*/
     grid-area: 1 / 3 / 2 / 4;
 
 }
 
 #bubble_2:hover {
-    background: #cd00cd;
+    /*background: #cd00cd;*/
 
 }
 
 #bubble_3 {
-    background: #90ee90;
+    /*background: #90ee90;*/
     grid-area: 1 / 4 / 2 / 5;
 
 }
 
 #bubble_3:hover {
-    background: #d2f8d2;
+    /*background: #d2f8d2;*/
 }
 
 #bubble_4 {
-    background: green;
+    /*background: green;*/
     grid-area: 1 / 1 / 2 / 2;
 
 }
 
 #bubble_5 {
-    background: yellow;
+    /*background: yellow;*/
     grid-area: 1 / 2 / 2 / 3;
 
 }
 
 #bubble_6 {
-    background: orchid;
+    /*background: orchid;*/
     grid-area: 1 / 3 / 2 / 4;
 }
 
 #bubble_7 {
-    background: greenyellow;
+    /*background: greenyellow;*/
     grid-area: 1 / 4 / 2 / 5;
 }
 
 #bubble_8 {
-    background: navajowhite;
+    /*background: navajowhite;*/
     grid-area: 1 / 1 / 2 / 2;
 
 }
 
 #bubble_9 {
-    background: lightgoldenrodyellow;
+    /*background: lightgoldenrodyellow;*/
     grid-area: 1 / 2 / 2 / 3;
 
 }
 
 #bubble_10 {
-    background: #90ee90;
+    /*background: #90ee90;*/
     grid-area: 1 / 3 / 2 / 4;
 
 }
 
 #bubble_11 {
-    background: pink;
+    /*background: pink;*/
     grid-area: 1 / 4 / 2 / 5;
 
 }

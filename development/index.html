@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Global Variables -->
-<script>
+    <script>
 var isLoading = true;   // True if the loading spinner is present.
 var dataset = [];       // Dataset.
 var lga = [];           // List of valid LocalGovernmentAreas.
@@ -125,10 +125,11 @@ var options = {
             <!-- 0 6 7 1-->
             <!-- 4 10 11 5-->
             <!-- 2 8 9 3-->
-            <div id="vl" onclick="alert('Collapse the map!')"></div>
+            <div id="vl" onclick="collapseMap()"></div>
         </div>
         <div id="bubbles-container">
             <div class="bubble-row" id="front-row">
+<!--                <img src="images/gradients/purple.png" height="1417" width="1890"/>-->
                 <div class="bubble top-left bubble0" id="bubble_0">
                     <span class="bubble-text" id="bubble-text_0"></span>
                 </div>

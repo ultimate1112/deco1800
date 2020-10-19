@@ -21,7 +21,7 @@ function mapbox(results) {
     var searchControl = L.esri.Geocoding.geosearch().addTo(myMap);
 
 
-    var markerGroup = L.layerGroup().addTo(myMap)
+    var markerGroup = L.layerGroup().addTo(myMap);
     var circle = new L.circleMarker({color: 'green', fillColor: '#f03', fillOpacity: 0.5, radius: 15 });
 
     //Drops a marker when user clicks on the map
@@ -99,3 +99,8 @@ $(document).ready(function () {
         }
     });
 });
+
+function collapseMap() {
+    $("#map").css({"width":"0px"});
+    alert("Collapse that shit")
+}

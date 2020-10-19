@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Global Variables -->
-<script>
+    <script>
 var isLoading = true;   // True if the loading spinner is present.
 var dataset = [];       // Dataset.
 var lga = [];           // List of valid LocalGovernmentAreas.
@@ -76,7 +76,7 @@ var options = {
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <!-- Insert Scripts Here -->
-    <script src="js/map%20script.js"></script>
+    <script src="js/map-script.js"></script>
     <!-- Leaflet scripts: Leaflet, Leaflet Geocoder -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -87,7 +87,7 @@ var options = {
     <script src="https://unpkg.com/esri-leaflet-geocoder"></script>
 
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="js/bubble script.js"></script>
+    <script src="js/bubble-script.js"></script>
 
 
 </head>
@@ -109,69 +109,72 @@ var options = {
         </ul>
     </nav>
 
-    <!-- Bubble Section -->
-<!--    <main id="bubble-section" class="pad-top pad-bottom">-->
-<!--        <section>-->
-            <div id="content-container">
-                <div id="map-container">
-                    <!-- Insert Pullout Map Here -->
-                    <article id="map"></article>
+    <div>
+        <select id="lga" class="js-example-basic-single" style="width: 100%;">
+            <option selected value="...">...</option>
+        </select>
+    </div>
+    <div id="content-container">
+        <!-- LGA Selection -->
 
-                    <!-- 0 6 7 1-->
-                    <!-- 4 10 11 5-->
-                    <!-- 2 8 9 3-->
-                    <div id="vl" onclick="alert('Collapse the map!')"></div>
+        <div id="map-container">
+
+            <!-- Insert Pullout Map Here -->
+            <article id="map" class="beforeCollapse"></article>
+
+            <!-- 0 6 7 1-->
+            <!-- 4 10 11 5-->
+            <!-- 2 8 9 3-->
+            <div id="vl"></div>
+        </div>
+        <div id="bubbles-container">
+            <div class="bubble-row" id="front-row">
+<!--                <img src="images/gradients/purple.png" height="1417" width="1890"/>-->
+                <div class="bubble top-left bubble0" id="bubble_0">
+                    <span class="bubble-text" id="bubble-text_0"></span>
                 </div>
-                <div id="bubbles-container">
-                    <div class="bubble-row" id="front-row">
-                        <div class="bubble top-left bubble0" id="bubble_0">
-                            <span class="bubble-text" id="bubble-text_0"></span>
-                        </div>
-                        <div class="bubble middle-top bubble6" id="bubble_1">
-                            <span class="bubble-text" id="bubble-text_6"></span>
-                        </div>
-                        <div class="bubble middle-top bubble7" id="bubble_2">
-                            <span class="bubble-text" id="bubble-text_7"></span>
-                        </div>
-                        <div class="bubble top-right bubble1" id="bubble_3">
-                            <span class="bubble-text" id="bubble-text_1"></span>
-                        </div>
-                    </div>
-
-                    <div class="bubble-row" id="middle-row">
-                        <div class="bubble middle-left bubble4" id="bubble_4">
-                            <span class="bubble-text" id="bubble-text_4"></span>
-                        </div>
-                        <div class="bubble middle-middle bubble10" id="bubble_5">
-                            <span class="bubble-text" id="bubble-text_10"></span>
-                        </div>
-                        <div class="bubble middle-middle bubble11" id="bubble_6">
-                            <span class="bubble-text" id="bubble-text_11"></span>
-                        </div>
-                        <div class="bubble middle-right bubble5" id="bubble_7">
-                            <span class="bubble-text" id="bubble-text_5"></span>
-                        </div>
-                    </div>
-
-                    <div class="bubble-row" id="bottom-row">
-                        <div class="bubble bottom-left bubble2" id="bubble_8">
-                            <span class="bubble-text" id="bubble-text_2"></span>
-                        </div>
-                        <div class="bubble middle-bottom bubble8" id="bubble_9">
-                            <span class="bubble-text" id="bubble-text_8"></span>
-                        </div>
-                        <div class="bubble middle-bottom bubble9" id="bubble_10">
-                            <span class="bubble-text" id="bubble-text_9"></span>
-                        </div>
-                        <div class="bubble bottom-right bubble3" id="bubble_11">
-                            <span class="bubble-text" id="bubble-text_3"></span>
-                        </div>
-                    </div>
+                <div class="bubble middle-top bubble6" id="bubble_1">
+                    <span class="bubble-text" id="bubble-text_6"></span>
+                </div>
+                <div class="bubble middle-top bubble7" id="bubble_2">
+                    <span class="bubble-text" id="bubble-text_7"></span>
+                </div>
+                <div class="bubble top-right bubble1" id="bubble_3">
+                    <span class="bubble-text" id="bubble-text_1"></span>
                 </div>
             </div>
-<!--        </section>-->
 
-<!--    </main>-->
+            <div class="bubble-row" id="middle-row">
+                <div class="bubble middle-left bubble4" id="bubble_4">
+                    <span class="bubble-text" id="bubble-text_4"></span>
+                </div>
+                <div class="bubble middle-middle bubble10" id="bubble_5">
+                    <span class="bubble-text" id="bubble-text_10"></span>
+                </div>
+                <div class="bubble middle-middle bubble11" id="bubble_6">
+                    <span class="bubble-text" id="bubble-text_11"></span>
+                </div>
+                <div class="bubble middle-right bubble5" id="bubble_7">
+                    <span class="bubble-text" id="bubble-text_5"></span>
+                </div>
+            </div>
+
+            <div class="bubble-row" id="bottom-row">
+                <div class="bubble bottom-left bubble2" id="bubble_8">
+                    <span class="bubble-text" id="bubble-text_2"></span>
+                </div>
+                <div class="bubble middle-bottom bubble8" id="bubble_9">
+                    <span class="bubble-text" id="bubble-text_8"></span>
+                </div>
+                <div class="bubble middle-bottom bubble9" id="bubble_10">
+                    <span class="bubble-text" id="bubble-text_9"></span>
+                </div>
+                <div class="bubble bottom-right bubble3" id="bubble_11">
+                    <span class="bubble-text" id="bubble-text_3"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer id="page-footer" class="pad-top pad-bottom">

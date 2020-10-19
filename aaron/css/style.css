@@ -6,25 +6,25 @@
 
 /*Loading Spinner*/
 #loading {
-	background-image: url('../images/infinityspinner.gif');
-	background-color: white;
-	border-radius: 15px;
-	left: 50%;
-	margin-left: -100px;
-	top: 50%;
-	margin-top: -100px;
-	width: 200px;
-	height: 200px;
-	position: fixed;
-	border: 2px solid black;
-	box-shadow: 5px 10px;
-	z-index: 22;
-	transition: all 0.5s ease; /* Transition anything that's changed */
+    background-image: url('../images/infinityspinner.gif');
+    background-color: white;
+    border-radius: 15px;
+    left: 50%;
+    margin-left: -100px;
+    top: 50%;
+    margin-top: -100px;
+    width: 200px;
+    height: 200px;
+    position: fixed;
+    border: 2px solid black;
+    box-shadow: 5px 10px;
+    z-index: 22;
+    transition: all 0.5s ease; /* Transition anything that's changed */
 }
 
 body.loaded #loading {
-	visibility: hidden;
-	opacity: 0;
+    visibility: hidden;
+    opacity: 0;
 }
 
 body.unloaded #loading {
@@ -33,14 +33,14 @@ body.unloaded #loading {
 }
 
 body.loaded .content{
-	filter: none;
-	visibility: visible;
+    filter: none;
+    visibility: visible;
 }
 
 body.unloaded .content {
-	visibility: hidden;
-	filter: blur(5px);
-	transition: all 0.5s ease; /* Transition anything that's changed */
+    visibility: hidden;
+    filter: blur(5px);
+    transition: all 0.5s ease; /* Transition anything that's changed */
 }
 
 /* GLOBAL STYLES */
@@ -53,7 +53,7 @@ a {
     text-decoration: none;
 }
 
-h1 { 
+h1 {
     color: black;
     font-size: 20px;
 }
@@ -175,11 +175,11 @@ p {
 
 /* MAIN MENU */
 #main-menu {
-    background-color: white;
+    background-color: black;
     min-height: 80px;
     position: sticky;
     top: 0px;
-    z-index: 1;
+    z-index: 100;
     display: flex;
     justify-content: space-between;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
@@ -193,7 +193,7 @@ p {
 }
 
 #main-menu a {
-    color: black;
+    color: white;
 }
 
 #main-menu a:hover {
@@ -368,7 +368,7 @@ footer a:hover {
     * {
         overflow-x: hidden;
     }
-    
+
     p {
         text-align: justify;
     }
@@ -384,14 +384,14 @@ footer a:hover {
     }
 
     /* MAIN MENU */
-    #main-menu ul, #main-menu .logo {         
+    #main-menu ul, #main-menu .logo {
         justify-content: center;
         padding: 20px 0;
         width: 100%;
     }
 
     #main-menu li {
-        padding: none;
+        padding: 0;
     }
 
     /* FILTER PAGE */
@@ -404,7 +404,7 @@ footer a:hover {
         justify-content: center;
         margin: 12px 0;
     }
-    
+
     .fltr-location .btn {
         margin-bottom: 20px;
     }

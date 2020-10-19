@@ -391,7 +391,7 @@ footer a:hover {
     }
 
     #main-menu li {
-        padding: none;
+        padding: 0;
     }
 
     /* FILTER PAGE */

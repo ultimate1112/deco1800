@@ -3,10 +3,12 @@ $(document).ready(function() {
 
 });
 
+const BUBBLE = ".bubble";
+const BUBBLETEXT = "#bubble-text_";
+var enlarge = false;
+
 function beginBubbles(values) {
     var center = [[]];
-    var bubble = ".bubble";
-    var bubbleText = "#bubble-text_";
     var bubbleValues = [];
     var counter = 0;
     $.each(dataset, function(offence, value) {
@@ -19,6 +21,19 @@ function beginBubbles(values) {
         bubbleValues.push(object);
         counter++;
     });
+    var bubbleColors = ["images/gradients/deep-orange.png",
+        "images/gradients/green.png",
+        "images/gradients/lightBlue-darkBlue.png",
+        "images/gradients/lightBlue-purple.png",
+        "images/gradients/lightPurple-reddishPurple.png",
+        "images/gradients/maroony-purple.png",
+        "images/gradients/pinkish-purple.png",
+        "images/gradients/purple.png",
+        "images/gradients/purplish-blue.png",
+        "images/gradients/red-purple.png",
+        "images/gradients/turqoise-blue.png",
+        "images/gradients/yellow-orange.png"
+    ];
     // var testValues = [{crime: "Some crime", crimeValue: 100 },
     //     {crime: "Arson", crimeValue: 200 },
     //     {crime: "Rape", crimeValue: 300 },
@@ -34,41 +49,54 @@ function beginBubbles(values) {
     bubbleValues.sort(function (a, b) {
         return a.crimeValue - b.crimeValue;
     });
-    console.log(bubbleValues);
-    hoverBubble(bubbleValues, bubbleText);
+    var round = 0;
+    var len = bubbleValues.length;
+    while(round < len){
+        bubbleValues[round].crimeValue = Math.round(bubbleValues[round].crimeValue);
+        round++
+    }
+    // console.log(bubbleValues);
+    hoverBubble(bubbleValues, BUBBLETEXT);
     for (var i = 0; i < $('.bubble').length; i++) {
-        center[i] = getMiddleCoor(bubble + i);
-        getBubbleSize(bubbleValues[i].crimeValue, bubble + i);
-        setText(bubbleValues[i].crime, bubbleValues[i].crimeValue, bubbleText + i);
+        center[i] = getMiddleCoor(BUBBLE + i);
+        setbubbles(bubbleValues[i].crimeValue, BUBBLE + i, bubbleValues[0].crimeValue, bubbleColors[i]);
+        setText(bubbleValues[i].crime, bubbleValues[i].crimeValue, BUBBLETEXT + i, bubbleValues[0].crimeValue);
     }
     setInterval(function() {bubbleMovement(center);}, 1400);
-    // create a interval that moves each bubble
-    // updateContainer();
-
-
-
-
-    setTimeout(function() {
-        alert('hello world!');
-
-        alert('Rendering from bubble%20script.js: ' + options['date'] + ' & ' + options['lga']);
-    }, 10000);  // 10 seconds to timeout.
+    if (enlarge == true) {
+        modifyBubbles("expand");
+    }
+    // setTimeout(function() {
+    //     alert('hello world!');
+    //
+    //     alert('Rendering from BUBBLE%20script.js: ' + options['date'] + ' & ' + options['lga']);
+    // }, 10000);  // 10 seconds to timeout.
 
 }
 
-function getBubbleSize(crimeValue, element) {
+function setbubbles(crimeValue, element, smallestValue, color) {
+    var height = getBubbleSize(crimeValue, element, smallestValue);
+    $(element).css({"height":height + "px", "width":height + "px", "background-image":"url(" + color + ")"});
+}
+
+function getBubbleSize(crimeValue, element, smallestValue) {
+    var minHeight = 40;
+    var standardArea = Math.PI * Math.pow(minHeight, 2);
+    var modifiedarea = crimeValue/smallestValue * standardArea;
     // Area of circle is pi * r^2
-    var standardArea = Math.PI * Math.pow(6, 2);
-    var areaOfCircleRequired = standardArea * crimeValue;
-    // Reverse the formula to get the radius of the circle and multiply by 2 to get the height
-    // This is done because a value that is twice as large doesn't mean the radius is double but rather the area
-    var height = Math.sqrt(areaOfCircleRequired / Math.PI) * 2;
-    $(element).css({"height":height + "px", "width":height + "px"});
+    if (crimeValue == 0) {
+        return 0;
+    }
+    return Math.sqrt(modifiedarea / Math.PI) * 2;
 }
 
-function setText(text, crimeValue, element) {
-    var fontSize = 15 + crimeValue * 0.03;
-    $(element).text(text);
+function setText(text, crimeValue, element, smallestValue) {
+    var fontSize = 15 + crimeValue/smallestValue;
+    if (crimeValue == 0) {
+        $(element).text("");
+    } else {
+        $(element).text(text);
+    }
     $(element).css({"font-size":fontSize + "px"});
 
 }
@@ -77,11 +105,11 @@ function placeBubblesOnPage(bubbles) {
     // Suppose we store the height & width according to the correct order
     // We need to set a specific location to start
     var startingLocation = [100, 100];
-    var bubble = "#bubble_";
+    var BUBBLE = "#bubble_";
     for (var i = 0; i < 12; i++) {
         startingLocation[0] += bubbles[i];
         startingLocation[1] += bubbles[i];
-        $(bubble + i).css({"top":startingLocation[0] + "px", "left":startingLocation[1] + "px"});
+        $(BUBBLE + i).css({"top":startingLocation[0] + "px", "left":startingLocation[1] + "px"});
     }
 }
 
@@ -107,8 +135,8 @@ function getMiddleCoor(element) {
 
 function bubbleMovement(center) {
     try {
-        var bubble = "#bubble_";
-        // Repeat for each bubble
+        var BUBBLE = "#bubble_";
+        // Repeat for each BUBBLE
         for (var i = 0; i < $('.bubble').length; i++) {
             var centerX = center[i].centerX;
             var centerY = center[i].centerY;
@@ -127,7 +155,7 @@ function bubbleMovement(center) {
 
             var moveCSSx = moveX + "px";
             var moveCSSy = moveY + "px";
-            $(bubble + i).css({left: moveCSSx, top: moveCSSy});
+            $(BUBBLE + i).css({left: moveCSSx, top: moveCSSy});
         }
 
     } catch (e) {
@@ -142,14 +170,13 @@ var bubblecounter = 0;
 var globalBubble = [];
 var globalBubbleText;
 
-function hoverBubble(bubbles, bubbleText) {
+function hoverBubble(bubbles, BUBBLETEXT) {
     globalBubble = bubbles;
     for (var i = 0; i < bubbles.length; i++) {
         //     bubblecounter = i;
         // console.log(globalBubble[bubblesCounter[bubblecounter]].crimeValue);
-        var bubble = $("#bubble_" + i).hover(function(){
+        var BUBBLE = $("#bubble_" + i).hover(function(){
             var counter = $(this).attr("class").match(/\d+/);
-            console.log(counter);
             $(this).find("span").text(globalBubble[counter].crime + "\n" +
                 globalBubble[counter].crimeValue);
         }, function(){
@@ -158,6 +185,41 @@ function hoverBubble(bubbles, bubbleText) {
         });
     }
 }
+
+function modifyBubbles(type) {
+    for (var i = 0; i < $('.bubble').length; i++) {
+        var element = BUBBLE + i;
+        var elementText = BUBBLETEXT + i;
+        var height, font;
+        if ($(element).height() !== 0) {
+            if (type == "expand") {
+
+                height = $(element).height() + 0.04 * $(window).height();
+                // Returns with px, converting to int selects only the first few numbers
+                font = parseInt($(elementText).css("font-size"))  + 3;
+                $("#content-container").css({gridTemplateColumns: "min-content 90vw"});
+                // $("#bubble-container").css({paddingLeft: "40vw"});
+
+                enlarge = true;
+
+
+            } else if (type == "shrink") {
+                height = $(element).height() - 0.04 * $(window).height();
+                font = parseInt($(elementText).css("font-size")) - 3;
+                $("#content-container").css({gridTemplateColumns: "min-content min-content"});
+                // $("#bubble-container").css({paddingLeft: "0"});
+                enlarge = false;
+            } else {
+                return;
+            }
+            console.log(font + "px");
+
+            $(element).css({"height":height + "px", "width":height + "px"});
+            $(elementText).css({"font-size":font + "px"})
+        }
+    }
+}
+
 
 // function updateContainer() {
 //     $("#bubbles-container").css({gridTemplateRows: "max-content min-content min-content",

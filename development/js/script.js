@@ -31,7 +31,7 @@ function startBessie() {
     // Request the data for default values.
     retrieveDataset();
 
-options['lga'] = "testing transmission from script.js!";
+// options['lga'] = "testing transmission from script.js!";
 
 
     $("#refresh").on("click", function() {
@@ -153,7 +153,10 @@ function updateView() {
     PrettyPrintJsonConsole(JSON.stringify(dataset,null,4));
 
     hideLoader();   // View is finished updating.
-    beginBubbles(dataset);
+    // This will call the bubbles only for the home page for now
+    if (document.title == "Show Me The Crime | Home") {
+        beginBubbles(dataset);
+    }
 }
 
 /**

@@ -11,7 +11,7 @@
 	grid-area: 1 / 1 / 2 / 2;
 	display: grid;
 	grid-template-columns: min-content min-content;
-	z-index: -100;
+	z-index: 0;
 }
 
 #map {
@@ -24,7 +24,7 @@
 }
 
 #vl {
-	border-left: 1vw solid lightgrey;
+	border-left: 1vw solid #474747;
 	height: 100vh;
 	/*position: absolute;*/
 	/*left: 40vw;*/
