@@ -1,12 +1,19 @@
-function mapbox(results) {
-    console.log(results);
+/**
+ * Show map.
+ */
+
+function mapbox() {
+
+    // Initialize Map.
     var myMap = L.map("map").setView([-25, 135], 4);
-    var tiles = L.esri.basemapLayer("Streets").addTo(myMap);
-    var results = L.layerGroup().addTo(myMap);
     myMap.options.minZoom = 4;
     myMap.options.maxZoom = 15;
 
-    //Obtain personalised token for Major Project
+    // Fallback map.
+    var tiles = L.esri.basemapLayer("Streets").addTo(myMap);
+
+    // Load Tile Layers from mapbox.com.
+    //TODO: Obtain personalised token for Major Project
     L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGFhbm0iLCJhIjoiY2tmcTJ3cnB3MGdhbTJ5cWpnY2ltZ2l0MCJ9.M7_7ZzSK3Q9LUimKk3OvVw", {
         attribution: 'Map data © href="https://www.openstreetmap.org/">OpenStreetMap contributors, href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA, Imagery © href="https://www.mapbox.com/">Mapbox',
         maxZoom: 15,
@@ -17,89 +24,120 @@ function mapbox(results) {
         accessToken: 'your.mapbox.access.token',
     }).addTo(myMap);
 
-    //Search bar icon
+    // Load Overlay of Local Government Area Boundaries.
+    var wmsLayer = L.tileLayer.wms('https://data.gov.au/geoserver/qld-local-government-areas-psma-administrative-boundaries/wms?', {
+    layers: 'ckan_16803f0b_6934_41ae_bf82_d16265784c7f',
+    format: 'image/png',
+    transparent: true,
+    opacity: 0.5,
+    }).addTo(myMap);
+
+    // Search.
     var searchControl = L.esri.Geocoding.geosearch().addTo(myMap);
 
-
+    // Holds marker of where user has clicked.
     var markerGroup = L.layerGroup().addTo(myMap);
-    var circle = new L.circleMarker({color: 'green', fillColor: '#f03', fillOpacity: 0.5, radius: 15 });
 
-    //Drops a marker when user clicks on the map
+    // Drops a marker when user clicks on the map
     myMap.on('click', function (e) {
+
+        // Replace with new marker.
         markerGroup.clearLayers();
-        // circle = new L.circleMarker(e.latlng, { color: 'blue', fillOpacity: 0.1, radius: 10 });
-        // myMap.addLayer(circle);
+        var mark = L.marker(e.latlng).addTo(markerGroup);
 
-        var radius = e.accuracy;
-
-        L.marker(e.latlng).addTo(markerGroup)
-            .bindPopup("Your nearest local government area is: " + radius).openPopup();
-
-        console.log(e.latlng, "radius: " + radius+ "m");
-    });
-
-    //Drops a marker when the search bar is used
-    searchControl.on("results", function (data) {
-        markerGroup.clearLayers();
-
-
-        for (var i = data.results.length - 1; i >= 0; i--) {
-            searchResult = results.addLayer(L.marker(data.results[i].latlng)).addTo(markerGroup).openPopup("Your nearest local government area is: ");
-            console.log(data.results[i].latlng);
-
+        // Hijack a WMS server for info. (Async).
+        var query = {
+            request: 'GetFeature',
+            typename: 'ckan_16803f0b_6934_41ae_bf82_d16265784c7f',
+            outputFormat: 'json',
+            bbox: `${e.latlng.lat},${e.latlng.lng},${e.latlng.lat},${e.latlng.lng}`,    // Uses template literals.
         }
+
+        $.ajax({
+            url: "https://data.gov.au/geoserver/qld-local-government-areas-psma-administrative-boundaries/wfs",
+            timeout: 1000,
+            data: query,
+            dataType: "json",
+            cache: true,
+            success: function (data) {
+                if(data.features.length !== 0) {
+                    if(data.features.length > 1) {
+                        console.log('Multiple LGAs found...');
+                    }
+                    lga = data.features[0].properties;
+                    console.log(lga);
+
+
+                    sessionStorage.setItem('lga', lga.qld_lga__2);
+
+                    var found = false;
+                    var lgaList = JSON.parse(sessionStorage.getItem('lgaList'));
+                    var reg = new RegExp(`(${lga.qld_lga__2})`,'gi');
+                    $.each(lgaList, function(index, value) {
+                           if(value.match(reg)) {
+                               sessionStorage.setItem('lga', value);
+                               $(document).trigger('datasetUpdate', Date.now());
+                               found = true;
+                               return false;    // Exit each()
+                           }
+                    });
+
+                    if(found) {
+                        mark.bindPopup("Your nearest local government area is: " + lga.qld_lga__2).openPopup();
+                    } else {
+                        mark.bindPopup("Unable to find exact local government area. Please try again.").openPopup();
+                    }
+
+
+
+                }
+            },
+            error: function() {
+                alert('An error has occurred.');
+            }
+        });
     });
 
-    //Checks Geolocation of a user if permission is given
+
+    // Request GeoLocation of user.
     myMap.locate({setView: true, maxZoom: 16});
 
-    //Displays Geolocation of a user if permission is given
+    //Displays GeoLocation of a user if permission is given
     function onLocationFound(e) {
         var radius = e.accuracy;
 
-        L.marker(e.latlng).addTo(markerGroup)
-            .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
         L.circle(e.latlng, radius).addTo(markerGroup);
-        console.log(e.latlng, "radius: " + radius+ "m");
-    }
+        L.marker(e.latlng).addTo(markerGroup)
+            .bindPopup("You are within " + radius + " meters from this point")
+            .openPopup();
 
-    //Displays a default location if permission is not given
+
+
+
+
+        console.log(e.latlng, "radius: " + radius+ "m");
+    }  // onLocationFound.
     myMap.on('locationfound', onLocationFound);
 
+    // Displays a default location if permission is not given
     function onLocationError(e) {
-        alert(e.message);
         var centerPt = new L.LatLng(-27.470125, 153.0251);
         myMap.flyTo([-27.470125, 153.0251], 6);
+
         L.marker(centerPt).addTo(markerGroup)
-            .bindPopup("Default location: Brisbane").openPopup();
+            .bindPopup("Default location: Brisbane")
+            .openPopup();
 
         console.log("Geolocation permission: denied, " +
             "Default local council: Brisbane, " + centerPt);
-    }
+        sessionStorage.setItem('lga', "Brisbane City Council");
+        $(document).trigger('datasetUpdate');
 
+    }  // onLocationError.
     myMap.on('locationerror', onLocationError);
-}
 
-$(document).ready(function () {
+}  // mapbox.
 
-    var data = {
-        resource_id: "35ea936d-083e-4ad6-beab-e0fede2cd3a6",
-        limit: 100
-    }
-
-    $.ajax({
-        url: "https://www.data.qld.gov.au/api/3/action/datastore_search",
-        timeout: 1000,
-        data: data,
-        dataType: "jsonp",
-        cache: true,
-        success: function (results) {
-            mapbox(results);
-        }
-    });
-    collapseMap();
-});
 
 function collapseMap() {
     $("#vl").click(function(){
@@ -113,3 +151,13 @@ function collapseMap() {
     });
     // alert("Collapse that shit")
 }
+
+
+$(document).ready(function () {
+    
+    // Load map.
+    mapbox();
+
+    // 'Collapsible map' functionality.
+    collapseMap();
+});
