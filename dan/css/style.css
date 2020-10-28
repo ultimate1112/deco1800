@@ -215,6 +215,52 @@ p {
     margin-left: 10px;
 }
 
+/* HOME PAGE QUESTIONS */
+#faq-section {
+    display: grid;
+    height: 100vh;
+}
+
+#faq-top, #faq-bottom {
+    justify-content: center;
+    align-content: center;
+    height: 50vh;
+    text-align: center;
+}
+
+#faq-top h1, #faq-bottom h1 {
+    font-size: 3.5vw;
+    padding-top: 7.5vh;
+    padding-bottom: 5vh;
+}
+
+#faq-top p, #faq-bottom p {
+    font-size: 1.5vw;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    line-height: 1.6;
+}
+
+
+#faq-top h1, #faq-top p {
+    color: white;
+}
+
+#faq-bottom h1, #faq-bottom p {
+    color: black;
+
+}
+ 
+#faq-top {
+    background-color: black;
+}
+
+#faq-bottom {
+    background-color: #DCDCDC;
+}
+
+
+
 /*!* BUBBLE SECTION *!*/
 /*#bubble-section {*/
 /*    background: white;*/
