@@ -106,6 +106,8 @@ function hideLoader() {
     $("body").addClass("loaded");
 }
 
+
+
 // Update the LGA Dropdown box.
 function updateLGA() {
 
@@ -152,12 +154,16 @@ function updateView() {
 
     PrettyPrintJsonConsole(JSON.stringify(dataset,null,4));
 
-    hideLoader();   // View is finished updating.
     // This will call the bubbles only for the home page for now
     if (document.title == "Show Me The Crime | Home") {
         beginBubbles(dataset);
     }
 }
+
+
+
+
+
 
 /**
  * Retrieve Dataset.
@@ -216,6 +222,8 @@ function retrieveLGA() {
     });
 }
 
+
+
 function retrieveTimeframe() {
     // AJAX Call.
     $.ajax({
@@ -239,40 +247,6 @@ function retrieveTimeframe() {
     });
 }
 
-// Visualisation of JSON in Console
-/* Pulled from https://ourcodeworld.com/articles/read/112/how-to-pretty-print-beautify-a-json-string */
-function PrettyPrintJsonConsole(json) {
-    if (typeof json != 'string') {
-        json = JSON.stringify(json, undefined, '\t');
-    }
+$(document).ready(function(){
 
-    var
-        arr = [],
-        _string = 'color:green',
-        _number = 'color:darkorange',
-        _boolean = 'color:blue',
-        _null = 'color:magenta',
-        _key = 'color:red';
-
-    json = json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var style = _number;
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-        style = _key;
-            } else {
-        style = _string;
-            }
-        } else if (/true|false/.test(match)) {
-        style = _boolean;
-        } else if (/null/.test(match)) {
-        style = _null;
-        }
-        arr.push(style);
-        arr.push('');
-        return '%c' + match + '%c';
-    });
-
-    arr.unshift(json);
-
-    console.log.apply(console, arr);
-}
+});

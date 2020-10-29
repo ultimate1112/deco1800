@@ -9,11 +9,12 @@
 
 // Parameters.
 $lga = '';
+$excludeCrime = array();
 
 // Parse GET.
-if(!empty($_GET['lga'])) {
+if(!empty($_POST['lga'])) {
     // Sanitize.
-    $lga = filter_var($_GET['lga'], FILTER_SANITIZE_STRING);
+    $lga = filter_var($_POST['lga'], FILTER_SANITIZE_STRING);
 } else {
     // Default to BCC.
     $lga = "Brisbane City Council";
@@ -21,9 +22,9 @@ if(!empty($_GET['lga'])) {
 
 $timeframe = getTimeframe();    // From timeframe.php
 
-if(!empty($_GET['date'])) {
+if(!empty($_POST['date'])) {
     // Sanitize.
-    $date = filter_var($_GET['date'], FILTER_SANITIZE_STRING);
+    $date = filter_var($_POST['date'], FILTER_SANITIZE_STRING);
 
     // Validate
     if(!in_array($date, $timeframe)) {
@@ -35,6 +36,15 @@ if(!empty($_GET['date'])) {
     $date = $timeframe[0];
 }
 
+if(!empty($_POST['excludecrime'])) {
+    $excludeCrime = json_decode($_POST['excludecrime']);
+    if(empty($excludeCrime)) {
+        $excludeCrime = array();
+    }
+
+} else {
+    $excludeCrime = array();
+}
 
 // Initialize endpoint results as JSON.
 header('Content-type: text/javascript');
@@ -68,6 +78,11 @@ foreach($data['result']['records'] as $value) {
     foreach(["_id", "_full_text", "LGA Name", "Month Year"] as $unwanted) {
         if(isset($return_arr[$unwanted])) {
             unset($return_arr[$unwanted]);
+        }
+    }
+    foreach($excludeCrime as $excluded) {
+        if(array_key_exists($excluded, $return_arr)) {
+            unset($return_arr[$excluded]);
         }
     }
 

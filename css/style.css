@@ -4,43 +4,52 @@
     box-sizing: border-box;
 }
 
+#loading-container {
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 22;
+    position: absolute;
+    transition: all 0.5s ease; /* Transition anything that's changed */
+}
+
 /*Loading Spinner*/
 #loading {
-	background-image: url('../images/infinityspinner.gif');
-	background-color: white;
-	border-radius: 15px;
-	left: 50%;
-	margin-left: -100px;
-	top: 50%;
-	margin-top: -100px;
-	width: 200px;
-	height: 200px;
-	position: fixed;
-	border: 2px solid black;
-	box-shadow: 5px 10px;
-	z-index: 22;
-	transition: all 0.5s ease; /* Transition anything that's changed */
+    background-image: url('../images/infinityspinner.gif');
+    background-color: white;
+    border-radius: 15px;
+    left: 50%;
+    margin-left: -100px;
+    top: 50%;
+    margin-top: -100px;
+    width: 200px;
+    height: 200px;
+    position: fixed;
+    border: 2px solid black;
+    box-shadow: 5px 10px;
+    z-index: 22;
+    transition: all 0.5s ease; /* Transition anything that's changed */
 }
 
-body.loaded #loading {
-	visibility: hidden;
-	opacity: 0;
+body.loaded #loading, body.loaded #loading-container {
+    visibility: hidden;
+    opacity: 0;
 }
 
-body.unloaded #loading {
+body.unloaded #loading, body.unloaded #loading-container {
     visibility: visible;
     opacity: 1;
 }
 
 body.loaded .content{
-	filter: none;
-	visibility: visible;
+    filter: none;
+    visibility: visible;
 }
 
 body.unloaded .content {
-	visibility: hidden;
-	filter: blur(5px);
-	transition: all 0.5s ease; /* Transition anything that's changed */
+    visibility: hidden;
+    filter: blur(5px);
+    transition: all 0.5s ease; /* Transition anything that's changed */
 }
 
 /* GLOBAL STYLES */
@@ -53,7 +62,7 @@ a {
     text-decoration: none;
 }
 
-h1 { 
+h1 {
     color: black;
     font-size: 20px;
 }
@@ -65,7 +74,14 @@ h1 {
 }
 
 .d-none{
-    display: none!important;
+    width: 0 !important;
+    /*display: none;*/
+}
+
+.container2 {
+    width: 48vw;
+    /*flex: 1;*/
+    /*display: block;*/
 }
 
 p {
@@ -84,6 +100,40 @@ p {
     cursor: pointer;
 }
 
+.top_bar {
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(7, 131, 248);
+    color: #FFFFFF;
+    padding: 0.75em;
+}
+
+#left {
+    overflow: hidden;
+    text-align: center;
+    height: 20px;
+}
+
+#left a {
+    font-weight: bold;
+}
+
+#right {
+    float: right;
+    width: 30px;
+    height: 20px;
+    text-align: center;
+}
+
+.top_bar a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.top_bar a:hover {
+    text-decoration: underline;
+}
+
 .btn:hover {
     background: rgb(54, 54, 54);
 }
@@ -96,6 +146,14 @@ p {
 
 .pad-y{
     padding: 50px 0;
+}
+
+.xtra-small-pad {
+    padding: 10px;
+}
+
+.small-pad {
+    padding: 20px;
 }
 
 .small-pad-top {
@@ -150,6 +208,9 @@ p {
     margin-bottom: 80px;
 }
 
+.min-h-100{
+    min-height: 100vh;
+}
 
 /* Flex box */
 .flex {
@@ -172,10 +233,13 @@ p {
     flex-direction: column;
 }
 
+.space-between {
+    justify-content: space-between;
+}
 
 /* MAIN MENU */
 #main-menu {
-    background-color: white;
+    background-color: black;
     min-height: 80px;
     position: sticky;
     top: 0px;
@@ -193,7 +257,7 @@ p {
 }
 
 #main-menu a {
-    color: black;
+    color: white;
 }
 
 #main-menu a:hover {
@@ -221,6 +285,50 @@ p {
 /*    min-height:100vh;*/
 /*}*/
 
+/* HOME PAGE QUESTIONS */
+#faq-section {
+    display: grid;
+    height: 100vh;
+}
+
+#faq-top, #faq-bottom {
+    justify-content: center;
+    align-content: center;
+    height: 50vh;
+    text-align: center;
+}
+
+#faq-top h1, #faq-bottom h1 {
+    font-size: 3.5vw;
+    padding-top: 7.5vh;
+    padding-bottom: 5vh;
+}
+
+#faq-top p, #faq-bottom p {
+    font-size: 1.5vw;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    line-height: 1.6;
+}
+
+
+#faq-top h1, #faq-top p {
+    color: white;
+}
+
+#faq-bottom h1, #faq-bottom p {
+    color: black;
+
+}
+
+#faq-top {
+    background-color: black;
+}
+
+#faq-bottom {
+    background-color: #DCDCDC;
+}
+
 /* Banner */
 .overlay {
     background: rgba(1, 31, 165, 0.39);
@@ -245,39 +353,97 @@ p {
 }
 
 /* FILTER PAGE */
-.fltr-location {
-    justify-content: space-between;
-    padding: 0 7.5%;
+.chosen-container{
+    min-width: 20rem;
+    width: auto!important;
+    padding-left: 20px;
 }
 
-.fltr-location h2 {
+.fltr-location {
+    justify-content: space-between;
+    overflow: scroll;
+}
+
+#fltr-by-crime {
+    justify-content: space-between;
+}
+
+.fltr-location, #fltr-by-crime {
+    justify-content: space-between;
+    /* padding: 0 7.5%; */
+}
+
+.fltr-location h2, #fltr-by-crime h2 {
+    font-size: 20px;
     display: flex;
     align-items: center;
 }
 
-.fltr-location select {
+.fltr-location select, #fltr-by-crime select {
     height: 30px;
-    min-width: 125px;
+    min-width: 20rem;
     border: none;
     border-radius: 5px;
-    margin: 20px 10px 20px 0;
+}
+
+#fltr-by-crime   {
+    background: rgb(110, 110, 110);
 }
 
 #fltr-location-1 {
-    background: grey;
+    flex: 1;
+    /* width: 95%; */
 }
+
+.dropdown-container {
+    background: rgb(202, 202, 202);
+    position: sticky;
+}
+
+#compare-btn {
+    font-size: 12px;
+    background-color: rgb(41, 41, 41);
+    color: rgb(139, 136, 136);
+    min-width: 36px;
+    max-width: 36px;
+    cursor: pointer;
+}
+
+#compare-btn:hover{
+    background-color: rgb(100, 97, 97);
+    color: white;
+}
+
+#compare-btn h2{
+    font-weight: 100;
+    writing-mode: vertical-rl;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    transform: rotate(180deg);
+    padding-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
 
 #fltr-location-2 {
-    background: rgb(212, 210, 210);
+    transition: all ease-in-out 0.5s;
+    /*flex: 1;*/
 }
 
-#fltr-location-2 button {
-    /* Helps allign the dropdowns between location 1 and 2 */
-    visibility: hidden;
+.bubble-container{
+    background-color: #fff;
+    flex: 1;
 }
 
 .btn-checked {
     background-color: darkgrey;
+}
+
+.location-section {
+    justify-content: space-between;
 }
 
 /* Form */
@@ -368,7 +534,7 @@ footer a:hover {
     * {
         overflow-x: hidden;
     }
-    
+
     p {
         text-align: justify;
     }
@@ -384,7 +550,7 @@ footer a:hover {
     }
 
     /* MAIN MENU */
-    #main-menu ul, #main-menu .logo {         
+    #main-menu ul, #main-menu .logo {
         justify-content: center;
         padding: 20px 0;
         width: 100%;
@@ -404,7 +570,7 @@ footer a:hover {
         justify-content: center;
         margin: 12px 0;
     }
-    
+
     .fltr-location .btn {
         margin-bottom: 20px;
     }

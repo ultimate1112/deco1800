@@ -1,102 +1,82 @@
 <!doctype html>
 <html lang="en">
-
 <head>
+    <!-- Metadata -->
     <meta charset="UTF-8">
     <meta name="description" content="Crime statistics page">
     <meta name="keywords" content="crime, statistics">
     <meta name="author" content="Anthony Chiam, Aaron Yue, Daniel Morgan, Lachlan Benson, Sean Marshall">
-    <title>Show Me The Crime | Home</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <!-- Stylesheets Here -->
-    <link rel="stylesheet" href="css/style.css">
-
-    <!-- Viewport Meta Tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Global Variables -->
-<script>
-var isLoading = true;   // True if the loading spinner is present.
-var dataset = [];       // Dataset.
-var lga = [];           // List of valid LocalGovernmentAreas.
-var timeframe = [];     // List of valid MonthYear times.
+    <title>Show Me The Crime | Home</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
-// AJAX query options (default).
-// On initalisation of document, Date will revert to latest datapoint 
-//   when retrieveTimeframe() is called.
-var options = {
-    date: "NOV19",
-    lga: "Brisbane City Council",
-};
-
-
-</script>
-
-
-    <!-- Scripts Here -->
-<script src="js/jquery-3.5.1.min.js"></script>
-
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
-    <!-- Fonts Here -->
+    <!-- Fonts (GoogleFonts) -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
 
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans" rel="stylesheet">
-    <meta name="author" content="Anthony Chiam, Aaron Yue, Daniel Morgan, Lachlan Benson, Sean Marshall">
-    <title>UFC02-T01</title>
 
-    <!-- Stylesheets Here -->
-    <link rel="stylesheet" href="css/map.css">
-
-    <!-- Bubbles Visualisation CSS Code -->
-    <link rel="stylesheet" href="css/bubble.css">
-
-    <!-- Dependencies: Select2 @ CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet">
+    <!-- Select2 -Dropdown -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
-    <!-- Leaflet Stylesheet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-          crossorigin="" />
-    <!-- Esri Leaflet Geocoder stylesheet -->
-    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css" />
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@2.6.0/assets/css/leaflet.css">
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-
-    <!-- Viewport Meta Tag -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Fonts Here -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-    <!-- Insert Scripts Here -->
-    <script src="js/map-script.js"></script>
-    <!-- Leaflet scripts: Leaflet, Leaflet Geocoder -->
+    <!-- Leaflet -Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" 
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+        crossorigin="">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-            crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet@latest/dist/leaflet-src.js"></script>
-    <!-- Load Esri Leaflet from CDN -->
-    <script src="https://unpkg.com/esri-leaflet"></script>
-    <script src="https://unpkg.com/esri-leaflet-geocoder"></script>
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
 
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="js/bubble-script.js"></script>
+    <!-- Esri Leaflet (ArcGIS services) -->
+    <script src="https://unpkg.com/esri-leaflet@2.5.1/dist/esri-leaflet.js"
+        integrity="sha512-q7X96AASUF0hol5Ih7AeZpRF6smJS55lcvy+GLWzJfZN+31/BQ8cgNx2FGF+IQSA4z2jHwB20vml+drmooqzzQ=="
+        crossorigin=""></script>
+
+    <!-- Esri Leaflet - Geocoder Control -->
+    <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.css"
+        integrity="sha512-IM3Hs+feyi40yZhDH6kV8vQMg4Fh20s9OzInIIAc4nx7aMYMfo+IenRUekoYsHZqGkREUgx0VvlEsgm7nCDW9g=="
+        crossorigin="">
+    <script src="https://unpkg.com/esri-leaflet-geocoder@2.3.3/dist/esri-leaflet-geocoder.js"
+        integrity="sha512-HrFUyCEtIpxZloTgEKKMq4RFYhxjJkCiF5sDxuAokklOeZ68U2NPfh4MFtyIVWlsKtVbK5GD2/JzFyAfvT5ejA=="
+        crossorigin=""></script>
+
+    <!-- Geosearch -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css">
+    <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
+
+
+    <!-- Website Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Dataset -->
+    <script src="js/dataset.js"></script>
+
+    <!-- Map -->
+    <link rel="stylesheet" href="css/map.css">
+    <script src="js/map-script.js"></script>
+
+    <!-- Bubble Visualisation -->
+    <link rel="stylesheet" href="css/bubble.css">
+    <script src="js/bubbles.js"></script>
+
+    <!-- Script File -->
+    <script src="js/homepage.js"></script>
+    <script src="js/utility.js"></script>
 
 
 </head>
-
-<!-- Navigation Bar -->
-
-<div id="loading"></div>
-
 <body class="content">
+
+    <!-- Loading Spinner -->
+    <div id="loading-container">
+        <div id="loading"></div>
+    </div>
+
+    <!-- Navigation Bar -->
     <nav id="main-menu" class="sm-column">
         <div class="logo flex center-y">
             <h1><a href="index.html">Show Me The Crime</a></h1>
@@ -108,70 +88,107 @@ var options = {
             <li><a href="about.html">About</a></li>
         </ul>
     </nav>
-
-    <div>
-        <select id="lga" class="js-example-basic-single" style="width: 100%;">
-            <option selected value="...">...</option>
-        </select>
+    <div class="top_bar" id="homepage_bar">
+        <div id="right">
+            <a href="#" onclick="Hide(homepage_bar);">X</a>
+        </div>
+        <div id="left">
+            <b>Click</b> anywhere on the <b>map</b> and watch the bubbles transform! <a href="#faq-top">Click me to read more!</a>
+        </div>
     </div>
+
     <div id="content-container">
-        <!-- LGA Selection -->
 
+        <!-- Map -->
         <div id="map-container">
-
-            <!-- Insert Pullout Map Here -->
-            <article id="map"></article>
+            <div id="map" class="beforeCollapse"></div>
 
             <!-- 0 6 7 1-->
             <!-- 4 10 11 5-->
             <!-- 2 8 9 3-->
-            <div id="vl" onclick="alert('Collapse the map!')"></div>
+            <div>
+                <div id="vl"></div>
+                <div id="triangle"></div>
+            </div>
         </div>
-        <div id="bubbles-container">
-            <div class="bubble-row" id="front-row">
-                <div class="bubble top-left bubble0" id="bubble_0">
-                    <span class="bubble-text" id="bubble-text_0"></span>
+        <div id="toolbox">
+            <h3 class="bubble_toolbar_text">Current LGA: </h3><span id="current_lga">Brisbane City Council</span>
+            <h3 class="bubble_toolbar_text">Date: </h3><span id="current_date">NOV19</span>
+        </div>
+        <!-- Bubbles -->
+        <div class="bubbles-container bubbles-container-width">
+            <div id="#no-bubbles-container-1" class="no-bubbles-container">
+                <div id="no-bubbles-1" class="no-height no-bubbles">
+                    <div id="no-bubbles-text-1" class="no-height no-bubbles-text">
+                        This LGA does not have any data to be shown, please
+                        select a different LGA
+                    </div>
                 </div>
-                <div class="bubble middle-top bubble6" id="bubble_1">
-                    <span class="bubble-text" id="bubble-text_6"></span>
+            </div>
+            <div class="bubble-row front-row">
+                <!--                <img src="images/gradients/purple.png" height="1417" width="1890"/>-->
+                <div class="top-left bubble0-1 bubble-1 " id="bubble_0-1">
+                    <span class="bubble-text" id="bubble-text_0-1"></span>
                 </div>
-                <div class="bubble middle-top bubble7" id="bubble_2">
-                    <span class="bubble-text" id="bubble-text_7"></span>
+                <div class="middle-top bubble6-1 bubble-1 " id="bubble_1-1">
+                    <span class="bubble-text" id="bubble-text_6-1"></span>
                 </div>
-                <div class="bubble top-right bubble1" id="bubble_3">
-                    <span class="bubble-text" id="bubble-text_1"></span>
+                <div class="middle-top bubble7-1 bubble-1 " id="bubble_2-1">
+                    <span class="bubble-text" id="bubble-text_7-1"></span>
+                </div>
+                <div class="top-right bubble1-1 bubble-1 " id="bubble_3-1">
+
+                    <span class="bubble-text" id="bubble-text_1-1"></span>
                 </div>
             </div>
 
-            <div class="bubble-row" id="middle-row">
-                <div class="bubble middle-left bubble4" id="bubble_4">
-                    <span class="bubble-text" id="bubble-text_4"></span>
+            <div class="bubble-row middle-row">
+                <div class="middle-left bubble4-1 bubble-1 " id="bubble_4-1">
+                    <span class="bubble-text" id="bubble-text_4-1"></span>
                 </div>
-                <div class="bubble middle-middle bubble10" id="bubble_5">
-                    <span class="bubble-text" id="bubble-text_10"></span>
+                <div class="middle-middle bubble10-1 bubble-1 " id="bubble_5-1">
+                    <span class="bubble-text" id="bubble-text_10-1"></span>
                 </div>
-                <div class="bubble middle-middle bubble11" id="bubble_6">
-                    <span class="bubble-text" id="bubble-text_11"></span>
+                <div class="middle-middle bubble11-1 bubble-1 " id="bubble_6-1">
+
+                    <span class="bubble-text" id="bubble-text_11-1"></span>
                 </div>
-                <div class="bubble middle-right bubble5" id="bubble_7">
-                    <span class="bubble-text" id="bubble-text_5"></span>
+                <div class="middle-right bubble5-1 bubble-1 " id="bubble_7-1">
+                    <div id="popup">
+                        <div id="popup-content" class="popup"><strong>Hover over me!</strong></div>
+                    </div>
+                    <!--                    Class number for bubble nunber. This is just for the JavaScript (popup)-->
+                    <div id="popup-separator" class="5">
+                        <span class="bubble-text" id="bubble-text_5-1"></span>
+                    </div>
                 </div>
             </div>
 
-            <div class="bubble-row" id="bottom-row">
-                <div class="bubble bottom-left bubble2" id="bubble_8">
-                    <span class="bubble-text" id="bubble-text_2"></span>
+            <div class="bubble-row bottom-row">
+                <div class="bottom-left bubble2-1 bubble-1 " id="bubble_8-1">
+                    <span class="bubble-text" id="bubble-text_2-1"></span>
                 </div>
-                <div class="bubble middle-bottom bubble8" id="bubble_9">
-                    <span class="bubble-text" id="bubble-text_8"></span>
+                <div class="middle-bottom bubble8-1 bubble-1 " id="bubble_9-1">
+                    <span class="bubble-text" id="bubble-text_8-1"></span>
                 </div>
-                <div class="bubble middle-bottom bubble9" id="bubble_10">
-                    <span class="bubble-text" id="bubble-text_9"></span>
+                <div class="middle-bottom bubble9-1 bubble-1 " id="bubble_10-1">
+                    <span class="bubble-text" id="bubble-text_9-1"></span>
                 </div>
-                <div class="bubble bottom-right bubble3" id="bubble_11">
-                    <span class="bubble-text" id="bubble-text_3"></span>
+                <div class="bottom-right bubble3-1 bubble-1 " id="bubble_11-1">
+                    <span class="bubble-text" id="bubble-text_3-1"></span>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="faq-section">
+        <div id="faq-top">
+            <h1>What do the bubbles mean?</h1>
+            <p>The bubbles represent crimes per 100 000 persons. For example, if there are 582 Offences Against Property, then 582 in 100 000 persons have committed this offence.</p>
+        </div>
+        <div id="faq-bottom">
+            <h1>What do the colours mean?</h1>
+            <p>The colours are for visual aesthetics. There is no meaning behind them, they are there to look pretty.</p>
         </div>
     </div>
 
@@ -214,12 +231,4 @@ var options = {
 
     </footer>
 </body>
-
-<script src="js/script.js"></script>
-<script>
-    $(document).ready(function() {
-        startBessie();
-    });
-</script>
-
 </html>
