@@ -185,7 +185,6 @@ function updateDateList() {
 // Update the view.
 function updateView() {
     var numRows = 12;           // Number of rows to display.
-
     var dataset = JSON.parse(sessionStorage.getItem('dataset'));
 
     $("#result").empty();       // Clear element before appending.
@@ -198,6 +197,10 @@ function updateView() {
         $("#result").append("<p>" + "Offence [" + offence + "]: " + value + "</p>");
         counter = counter + 1;
     });
+
+    $("#current_lga").text(sessionStorage.getItem("lga"));
+    $("#current_date").text( createDate(sessionStorage.getItem("date")) );
+
 }
 
 

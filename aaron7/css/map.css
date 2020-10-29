@@ -54,7 +54,7 @@
 }
 
 .collapse {
-	width: 0; !important;
+	width: 0 !important;
 	/*height: 0; !important;*/
 	/*transition: width ease-in-out 0.5s*/
 }

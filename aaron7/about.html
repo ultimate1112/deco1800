@@ -61,17 +61,17 @@
     <section class="pad-top pad-bottom">
         <div class="container">
             <h1 class="pad-top pad-bottom">Have Any Questions?</h1>
-            <form action="action_page.php" class="flex lg-column">
+            <form id="contactform" method="post" action="php/send.php" class="flex lg-column">
     
                 <label for="fname">Full Name</label>
-                <input type="text" id="fname" name="fullname" placeholder="Your first and last name">
+                <input type="text" id="fname" name="fullname" placeholder="Your first and last name" required>
     
                 <label for="email">Email</label>
-                <input type="text" id="email" name="emailaddress" placeholder="Your email address">
+                <input type="email" id="email" name="emailaddress" placeholder="Your email address" required>
     
                 <label for="subject">Question</label>
                 <textarea id="subject" name="subject" placeholder="Write something you would like to ask us"
-                    style="height:100px"></textarea>
+                    style="height:100px" required></textarea>
     
                 <input type="submit" value="Submit" class="btn" id="submit-btn">
     
